@@ -69,8 +69,29 @@ def search(keyword):
 
 def get_photos(url=None):
     driver.get("https://page.auctions.yahoo.co.jp/jp/auction/o1136379660")
-    photo_elems=driver.find_elements(By.CSS_SELECTOR,"a.ProductImage__link.cl-noclick-log")
-    print(len(photo_elems))
+    time.sleep(2)
+    photo_elems=driver.find_elements(By.CSS_SELECTOR,"li.ProductImage__thumbnail")
+
+    for photo_elem in photo_elems:
+        photo_elem.click()
+        time.sleep(1)
+        img=driver.find_element(By.CSS_SELECTOR,'li.is-on > div > img').get_attribute("src")
+        print(img)
+
+def get_seller():
+    driver.get("https://page.auctions.yahoo.co.jp/jp/auction/o1136379660")
+    time.sleep(2)
+    href_seller=driver.find_element(By.CSS_SELECTOR,"a.Seller__selling").get_attribute("href")
+    driver.get(href_seller)
+    time.sleep(2)
+    seller_elems=driver.find_elements(By.CSS_SELECTOR,"a.Product__titleLink")
+    print(len(seller_elems))
+    for seller_elem in seller_elems:
+        seller_href=seller_elem.get_attribute("href")
+        print(seller_href)
+        driver.get(seller_href)
+        time.sleep(2)
+        print("取得")
 
 if __name__ == "__main__":
-    get_photos()
+    get_seller()
